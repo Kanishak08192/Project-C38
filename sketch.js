@@ -36,31 +36,33 @@ function preload(){
 
 
 function setup() {
-  createCanvas(600, 200);
+  createCanvas(600,200);
 
 
-  trex = createSprite(50,180,20,50);
+  trex = createSprite(200,180,20,50);
   trex.addAnimation("running", trex_running);
   trex.scale = 0.5;
   trex.addAnimation("collided", trex_collided);
-  
-  ground = createSprite(200,190,400,20);
+
+  ground = createSprite(200,260,400,20);
   ground.addImage("ground",groundImage);
-  ground.x = ground.width /2;
-  ground.velocityX = -(6 + 3 * score / 100);
+  //ground.x = ground.width /2;
+  //ground.velocityX = -(6 + 3 * score / 100);
   
-  gameOver = createSprite(300,100);
+  gameOver = createSprite(180,150);
   gameOver.addImage(gameOverImg);
   gameOver.scale = 0.5;
   gameOver.visible = false;
   
-  restart = createSprite(300,140);
+  restart = createSprite(180,200);
   restart.addImage(restartImg);
   restart.scale = 0.5;
   restart.visible = false;
   
+  camera.position.x = trex.x;
+  camera.position.y = trex.y;
   
-  invisibleGround = createSprite(200,190,400,10);
+  invisibleGround = createSprite(200,265,400,10);
   invisibleGround.visible = false;
   
   cloudsGroup = new Group();
@@ -78,11 +80,14 @@ function draw() {
     
   score = score + Math.round(getFrameRate()/60);
   
-  if(keyDown("space")) {
+  if(keyDown("space") && trex.y >= 180) {
     trex.velocityY = -10;
   }
   
-  trex.velocityY = trex.velocityY + 0.8
+  
+    trex.velocityY = trex.velocityY + 0.9
+  
+ 
   
   if (ground.x < 0){
     ground.x = ground.width/2;
@@ -124,14 +129,14 @@ gameOver.visible = true;
 function spawnClouds() {
   //write code here to spawn the clouds
   if (frameCount % 60 === 0) {
-    var cloud = createSprite(600,120,40,10);
+    var cloud = createSprite(600,260,40,10);
     cloud.y = Math.round(random(80,120));
     cloud.addImage(cloudImage);
     cloud.scale = 0.5;
     cloud.velocityX = -3;
     
      //assign lifetime to the variable
-    cloud.lifetime = 200;
+    cloud.lifetime = 250;
     
     //adjust the depth
     cloud.depth = trex.depth;
@@ -145,7 +150,7 @@ function spawnClouds() {
 
 function spawnObstacles() {
   if(frameCount % 60 === 0) {
-    var obstacle = createSprite(600,165,10,40);
+    var obstacle = createSprite(600,250,10,40);
     obstacle.velocityX = -4;
     
     //generate random obstacles
